@@ -5,7 +5,7 @@ TypeScript ビジネスデータ基盤開発 1Day Internship で使用するリ�
 ## 構成
 
 - local 環境に、node の実行環境を用意して、application を動かします。
-- docker 環境に、database として postgres と、web client と pgweb を用意します。
+- docker 環境に、database として postgres と、web client として pgweb を用意します。
 
 ## 環境構築
 
