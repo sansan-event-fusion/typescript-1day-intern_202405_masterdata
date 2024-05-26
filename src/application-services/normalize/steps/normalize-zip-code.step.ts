@@ -23,6 +23,34 @@ export const NormalizeZipCodeStep: NormalizeWorkflowStep = (data) => {
 };
 
 const normalizeZipCode = (zipCode: string) => {
-  // ここに処理を書いてください
-  return zipCode;
+  let normalizedZipCode = zipCode;
+  // 半角ハイフンに正規化する 15種類のハイフンを正規化する
+  normalizedZipCode = normalizedZipCode.replace(/\u30FC/g, '-');
+  // 空白文字を取り除く
+  normalizedZipCode = normalizedZipCode.replace(/[\s\t\r\n]/g, '');
+  // 全角数字を半角数字にする
+  // Ref) https://www.yoheim.net/blog.php?q=20191101
+  // normalizedZipCode = normalizedZipCode.replace(/[０-９]/g, (s) => {
+  //   return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
+  // });
+  // or
+  // Unicode正規化
+  normalizedZipCode = normalizedZipCode.normalize('NFKC');
+  // ハイフンを挿入する
+  const match = normalizedZipCode.match(/^(\d{3})(\d{2,4})$/);
+  console.log(match);
+  switch (match) {
+    case null:
+      break;
+    default:
+      normalizedZipCode = `${match[1]}-${match[2]}`;
+  }
+
+  // 求める条件を満たすかを確認する
+  if (!/^\d{3}-\d{2,4}$/.test(normalizedZipCode)) {
+    console.log('正規化できませんでした');
+    return zipCode;
+  }
+
+  return normalizedZipCode;
 };

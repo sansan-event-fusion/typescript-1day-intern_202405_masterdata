@@ -108,6 +108,7 @@ describe('NormalizeZipCodeStep', () => {
       { input: '123', expected: '123' },
       { input: '12345678', expected: '12345678' },
       { input: 'abcdefg', expected: 'abcdefg' },
+      { input: 'abcーdefg', expected: 'abcーdefg' },
     ])('%s', async ({ input, expected }) => {
       const inputData = {
         in: {
