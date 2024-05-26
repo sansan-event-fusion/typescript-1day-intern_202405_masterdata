@@ -55,3 +55,12 @@ export type BusinessLocationAttribute =
   | AddressAttributeValue
   | PhoneNumberAttributeValue
   | PrefectureCodeAttributeValue;
+
+/**
+ * EAV
+ * Entity: 拠点情報
+ * Attribute: 拠点情報のもととなる属性名
+ * Value: 属性に対応する値
+ * 例：{ Entity: 'SanSan', Attribute: '住所', Value: '東京都港区' }
+ * 中間テーブルの量が増える際にマイグレーションがきついから、EAVを使う
+ */

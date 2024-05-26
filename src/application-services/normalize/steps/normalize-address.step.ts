@@ -51,13 +51,24 @@ export const NormalizeAddressStep: NormalizeWorkflowStep = async (data) => {
 
 const normalizeAddress = async (address: string) => {
   // ここに処理を書いてください
+  let result = await normalize(address).then((res) => {
+    return res.pref + res.city + res.town + res.addr;
+  });
 
-  // 住所正規化ライブラリ
+  result = CJK_RADICALS_SUPPLEMENT_REPLACE_REGEXP_MAP.reduce(
+    (accumulator: string, [fromRegexp, to]: [RegExp, string]) => {
+      return accumulator.replace(fromRegexp, to);
+    },
+    result,
+  );
+
+  result = result.normalize('NFKC');
+
+  return result;
   // const geoloniaNormalizedObj = await normalize(result);
   // result =
   //   geoloniaNormalizedObj.pref +
   //   geoloniaNormalizedObj.city +
   //   geoloniaNormalizedObj.town +
   //   geoloniaNormalizedObj.addr;
-  return address;
 };

@@ -6,9 +6,14 @@ import { MergeWorkflowStep } from 'src/types/merge-workflow-step';
  */
 export const SelectLatestStep: MergeWorkflowStep = (data) => {
   // 適切な集約の単位にグループを作成する
-
+  const groupedData = _.groupBy(
+    data.in.attributes,
+    (attribute) => attribute.sansan_location_code + attribute.attribute,
+  );
   // 分割したグループ単位で、最新のデータを選択する
-  const attributes = [];
+  const attributes = Object.values(groupedData).map((group) =>
+    _.maxBy(group, (attribute) => attribute.crawled_at),
+  );
 
   return {
     in: {
