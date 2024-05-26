@@ -10,6 +10,7 @@ export const NormalizeBusinessLocationNameStep: NormalizeWorkflowStep = (
 
   const normalizedBusinessLocationName = normalizeBusinessLocationName(
     data.in.base_name,
+    data.in.company_name,
   );
   const baseNameAttribute: BaseNameAttributeValue = {
     sansan_organization_code: data.in.sansan_organization_code,
@@ -26,7 +27,28 @@ export const NormalizeBusinessLocationNameStep: NormalizeWorkflowStep = (
   return result;
 };
 
-const normalizeBusinessLocationName = (businessLocationName: string) => {
-  // ここに処理を書いてください
-  return businessLocationName;
+const normalizeBusinessLocationName = (
+  businessLocationName: string,
+  companyName: string,
+) => {
+  let normalizedBusinessLocationName = businessLocationName;
+  CJK_RADICALS_SUPPLEMENT_REPLACE_REGEXP_MAP.forEach(
+    (item: [RegExp, string]) => {
+      normalizedBusinessLocationName = normalizedBusinessLocationName.replace(
+        item[0],
+        item[1],
+      );
+    },
+  );
+  // or
+  // CJK_RADICALS_SUPPLEMENT_REPLACE_REGEXP_MAP.reduce(
+  //   (acc, [from, to]: [RegExp, string]) => acc.replace(from, to),
+  //   businessLocationName,
+  // );
+  // 法人名が含まれているなら削除
+  normalizedBusinessLocationName = normalizedBusinessLocationName.replace(
+    companyName,
+    '',
+  );
+  return normalizedBusinessLocationName;
 };
