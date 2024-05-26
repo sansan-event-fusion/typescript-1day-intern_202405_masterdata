@@ -1,6 +1,7 @@
 import { NormalizeWorkflowStep } from 'src/types/normalize-workflow-step';
 import { Attributes } from 'src/value/attribute';
 import { PhoneNumberAttributeValue } from 'src/value/business-location-attribute';
+import { CONTROL_CHARACTER_REGEXP } from './constant';
 
 export const NormalizePhoneNumberStep: NormalizeWorkflowStep = (data) => {
   if (!data.in.phone_number) return data;
@@ -23,6 +24,15 @@ export const NormalizePhoneNumberStep: NormalizeWorkflowStep = (data) => {
 };
 
 const normalizePhoneNumber = (phoneNumber: string) => {
-  // ここに処理を書いてください
+  if (!phoneNumber) return;
+  phoneNumber = phoneNumber.normalize('NFKC');
+
+  phoneNumber = phoneNumber.replace(/\u30FC/g, '-');
+
+  phoneNumber = phoneNumber.trim();
+
+  phoneNumber = phoneNumber.replace(CONTROL_CHARACTER_REGEXP, '');
+
+  phoneNumber = phoneNumber.replace(/^\uFEFF/, '');
   return phoneNumber;
 };
