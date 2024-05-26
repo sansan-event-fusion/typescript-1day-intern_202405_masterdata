@@ -22,7 +22,14 @@ export const NormalizeZipCodeStep: NormalizeWorkflowStep = (data) => {
   return result;
 };
 
-const normalizeZipCode = (zipCode: string) => {
+const normalizeZipCode = (zipCode: string): string => {
   // ここに処理を書いてください
-  return zipCode;
+  let normalizedZipCode = zipCode.replace('ー', '-');
+  normalizedZipCode = normalizedZipCode.replace(/\s/g, '');
+  normalizedZipCode = normalizedZipCode.normalize('NFKC');
+  const match = normalizedZipCode.match(/^(\d{3})(\d{2})(\d{2})?$/);
+  if (match != null) {
+    return `${match[1]}-${match[2]}${match[3] || ''}`;
+  }
+  return normalizedZipCode;
 };

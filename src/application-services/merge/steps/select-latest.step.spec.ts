@@ -10,7 +10,7 @@ import {
 } from './__fixtures__';
 import { SelectLatestStep } from './select-latest.step';
 
-describe.skip('SelectLatestStep', () => {
+describe('SelectLatestStep', () => {
   it('データソースに関わらず、各項目ごとに最新のデータを選択する', () => {
     const result = SelectLatestStep({
       in: { sansan_organization_code: dummySOC, attributes: baseData },
