@@ -25,5 +25,19 @@ export const NormalizeZipCodeStep: NormalizeWorkflowStep = (data) => {
 const normalizeZipCode = (zipCode: string) => {
   // 1
   zipCode = zipCode.replace('ー', '-');
-  return zipCode;
+
+  // 2
+  // zipCode = zipCode.replace(/[０-９]/g, (s) => {
+  //   return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
+  // });
+  zipCode = zipCode.normalize('NFKC');
+
+  //3
+  zipCode = zipCode.replace(/\s/g, '');
+
+  // 4
+  const match = zipCode.match(/^(\d{3})(\d{2})(\d{2})?$/);
+  if (!match) return zipCode;
+
+  return match[1] + '-' + match[2] + (match[3] || '');
 };
