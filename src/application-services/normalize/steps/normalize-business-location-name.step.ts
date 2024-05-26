@@ -41,7 +41,7 @@ const normalizeBusinessLocationName = (
     },
   );
   // or
-  // CJK_RADICALS_SUPPLEMENT_REPLACE_REGEXP_MAP.reduce(
+  // normalizedBusinessLocationName = CJK_RADICALS_SUPPLEMENT_REPLACE_REGEXP_MAP.reduce(
   //   (acc, [from, to]: [RegExp, string]) => acc.replace(from, to),
   //   businessLocationName,
   // );
