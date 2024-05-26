@@ -8,15 +8,15 @@ import { WorkFlowExecutorService } from 'libs/workflow-executor/src/workflow-exe
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 正規化ワークフロー
-  console.time('normalizeWorkflow');
-  const rawRepo = app.get(RawDataRepo);
-  const rawDataObservable = await rawRepo.fetch();
-  const normalizeExecutor = app.get<WorkFlowExecutorService>(
-    WorkflowType.NORMALIZE,
-  );
-  await normalizeExecutor.execute(rawDataObservable);
-  console.timeEnd('normalizeWorkflow');
+  // // 正規化ワークフロー
+  // console.time('normalizeWorkflow');
+  // const rawRepo = app.get(RawDataRepo); //リポジトリのインスタンス化
+  // const rawDataObservable = await rawRepo.fetch(); //csvデータの取得
+  // const normalizeExecutor = app.get<WorkFlowExecutorService>(
+  //   WorkflowType.NORMALIZE,
+  // );
+  // await normalizeExecutor.execute(rawDataObservable); //csvデータを入力にフローを実行
+  // console.timeEnd('normalizeWorkflow');
 
   // 名寄せ・統合ワークフロー
   console.time('mergeWorkflow');

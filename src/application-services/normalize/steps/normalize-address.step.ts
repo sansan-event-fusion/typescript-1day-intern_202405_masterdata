@@ -2,7 +2,10 @@ import { normalize } from '@geolonia/normalize-japanese-addresses';
 import { NormalizeWorkflowStep } from 'src/types/normalize-workflow-step';
 import { Attributes } from 'src/value/attribute';
 import { AddressAttributeValue } from 'src/value/business-location-attribute';
-import { CJK_RADICALS_SUPPLEMENT_REPLACE_REGEXP_MAP } from './constant';
+import {
+  CONTROL_CHARACTER_REGEXP,
+  CJK_RADICALS_SUPPLEMENT_REPLACE_REGEXP_MAP,
+} from './constant';
 
 const IROHA_ADDRESS = [
   '金沢市高柳町',
@@ -49,15 +52,41 @@ export const NormalizeAddressStep: NormalizeWorkflowStep = async (data) => {
   }
 };
 
-const normalizeAddress = async (address: string) => {
-  // ここに処理を書いてください
+// const normalizeAddress = async (address: string) => {
+//   let normalizedAddress = address.normalize('NFKC');
+//   normalizedAddress = normalizedAddress.replace(/\s/g, ' ');
 
-  // 住所正規化ライブラリ
-  // const geoloniaNormalizedObj = await normalize(result);
-  // result =
-  //   geoloniaNormalizedObj.pref +
-  //   geoloniaNormalizedObj.city +
-  //   geoloniaNormalizedObj.town +
-  //   geoloniaNormalizedObj.addr;
-  return address;
+//   // 住所正規化ライブラリ
+//   const geoloniaNormalizedObj = await normalize(normalizedAddress);
+//   normalizedAddress =
+//     geoloniaNormalizedObj.pref +
+//     geoloniaNormalizedObj.city +
+//     geoloniaNormalizedObj.town +
+//     geoloniaNormalizedObj.addr;
+//   return normalizedAddress;
+// };
+const normalizeAddress = async (address: string) => {
+  let result = address;
+
+  // 既出: 制御文字を除去
+  result = result.replace(CONTROL_CHARACTER_REGEXP, '');
+
+  // 既出: 康煕部首文字、および、CJK 部首補助文字を、CJK 統合漢字に 1 対 1 で置換
+  result = CJK_RADICALS_SUPPLEMENT_REPLACE_REGEXP_MAP.reduce(
+    (accumulator: string, [fromRegexp, to]: [RegExp, string]) => {
+      return accumulator.replace(fromRegexp, to);
+    },
+    result,
+  );
+
+  // 既出: 半角カナ=>全角カナ、全角英数=>半角英数に変換
+  result = result.normalize('NFKC');
+
+  const geoloniaNormalizedObj = await normalize(result);
+  result =
+    geoloniaNormalizedObj.pref +
+    geoloniaNormalizedObj.city +
+    geoloniaNormalizedObj.town +
+    geoloniaNormalizedObj.addr; // geolonia 正規化が失敗しても addr に住所は入っている
+  return result;
 };

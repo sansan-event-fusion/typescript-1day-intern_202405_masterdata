@@ -1,6 +1,7 @@
 // タブ文字、改行文字、復帰文字以外の制御文字
 export const CONTROL_CHARACTER_REGEXP = /[\x00-\x08\x0B\x0C\x0E-\x1F\xAD\x7F]/g;
 
+// 部首文字コード, 部首文字, 置換文字コード, 置換文字
 export const CJK_RADICALS_SUPPLEMENT_REPLACE_REGEXP_MAP = [
   ['2E83', '⺃', '4E5A', '乚'],
   ['2E85', '⺅', '4EBB', '亻'],
