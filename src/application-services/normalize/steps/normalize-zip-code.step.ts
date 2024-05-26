@@ -38,7 +38,6 @@ const normalizeZipCode = (zipCode: string) => {
   normalizedZipCode = normalizedZipCode.normalize('NFKC');
   // ハイフンを挿入する
   const match = normalizedZipCode.match(/^(\d{3})(\d{2,4})$/);
-  console.log(match);
   switch (match) {
     case null:
       break;

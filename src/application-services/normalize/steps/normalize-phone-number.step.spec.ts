@@ -172,7 +172,7 @@ describe('NormalizePhoneNumberStep', () => {
     expect(result.out[0]).toEqual(expectedOutput);
   });
 
-  it.skip('9. 数字(数字)-数字 というパターンにマッチする値の括弧を取り除き、括弧内の数字の前にハイフンを挿入する', async () => {
+  it.skip('9. 数字-(数字)-数字 というパターンにマッチする値の括弧を取り除き、括弧内の数字の前にハイフンを挿入する', async () => {
     const inputData = {
       in: {
         ...dummyRawData,
